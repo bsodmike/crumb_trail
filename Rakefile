@@ -36,7 +36,7 @@ namespace :spec do
 
   types.each do |type, dir|
     desc "Run the code examples in #{dir}"
-    RSpec::Core::RakeTask.new(type => spec_prereq) do |t|
+    RSpec::Core::RakeTask.new(type => :noop) do |t|
       t.pattern = "./#{dir}/**/*_spec.rb"
     end
   end

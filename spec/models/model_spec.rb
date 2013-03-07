@@ -8,6 +8,10 @@ describe "ActiveRecord Models that declare `has_crumb_trail`" do
   end
 
   it "should respond to Book#icanhazcheeseburger?" do
-    @book.icanhazcheeseburger?.should == "om nom nom!"
+    @book.icanhazcheeseburger?.should eq "om nom nom!"
+  end
+
+  it "should have_many logs" do
+    @book.logs.should eq []
   end
 end

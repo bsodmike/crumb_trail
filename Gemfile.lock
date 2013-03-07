@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     crumb_trail (0.0.1)
-      rails (~> 3.2.12)
+      activerecord (>= 3.2)
 
 GEM
   remote: http://rubygems.org/
@@ -139,6 +139,7 @@ DEPENDENCIES
   guard-rspec
   jquery-rails
   mocha
+  rails (~> 3.2.12)
   rb-fsevent
   rspec-rails
   sqlite3

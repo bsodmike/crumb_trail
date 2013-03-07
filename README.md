@@ -70,16 +70,24 @@ CrumbTrail
   should be a Module
 
 ActiveRecord Models that declare `has_crumb_trail`
-  should have_many logs
-  should log object state for changes made
-  should log object state after it is destroyed
-  should log changes when saving a new object
-    logs current object
+  should have the association of logs
+  when changing object state
+    when destroying an object
+      should log object state after it is destroyed
+    when saving a new object
+      should log state of the current object
+    when updating an object attribute
+      should log object state for changes made
+  CrumbTrail usage interface
+    should respond to `has_logs?`
+    without any logs
+      should response to `previous_state` and return nil
+      should respond to `previous_state` and return the previous object state
 
-Finished in 0.07734 seconds
-5 examples, 0 failures
+Finished in 0.10184 seconds
+8 examples, 0 failures
 
-Randomized with seed 48086
+Randomized with seed 14218
 ```
 
 ## Contribute

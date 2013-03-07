@@ -25,6 +25,20 @@ module CrumbTrail
     # InstanceMethods module inside ActiveSupport::Concern is no longer
     # included automatically.
     module InstanceMethods
+      def previous_state
+        return nil unless has_logs?
+        subject = self
+        clone = subject.clone.tap do |obj|
+          subject.logs.first.object_changes.each_pair do |k,v|
+            obj[k.to_sym] = "#{v}"
+          end
+        end
+      end
+
+      def has_logs?
+        logs.any? ? true : false
+      end
+
       private
       def record_create
         log_changes(:event => 'create')

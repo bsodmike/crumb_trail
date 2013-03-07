@@ -4,6 +4,33 @@
 
 Tested for Rails 3.2.12 and is dependent on ActiveRecord `>=3.2`.
 
+## API Summary
+When you declare `has_crumb_trail` in your model, you get these methods:
+
+```ruby
+class Book < ActiveRecord::Base
+  has_crumb_trail
+end
+
+# Returns true if the book has any logged changes
+book.has_logs?
+
+# Returns the book object in its previous state, i.e.
+#
+# book #=>
+#   #<Book id: 64, title: "The Gutenberg Revolution", created_at: "2013-03-07 17:44:52", updated_at: "2013-03-07 17:44:52">
+#
+# book.previous_state #=>
+#   #<Book id: 64, title: "Book", created_at: "2013-03-07 17:48:34", updated_at: "2013-03-07 17:48:34">
+book.previous_state
+```
+## Features
+
+* Logs every create, update and destroy for AR models that declare
+`has_crumb_trail`
+* Object state is [serialized to YAML as
+default](http://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Serialization/ClassMethods.html#method-i-serialize)
+
 ## Installation & Usage
 
 ### Rails 3

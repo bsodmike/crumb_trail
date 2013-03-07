@@ -25,7 +25,7 @@ describe "ActiveRecord Models that declare `has_crumb_trail`" do
     context "when saving a new object" do
       it "should log state of the current object" do
         Log.all.empty?.should be
-        @book = Book.create title: "Book"
+        @book = Book.create! title: "Book"
         @book.logs.empty?.should be_false
       end
     end
@@ -35,6 +35,26 @@ describe "ActiveRecord Models that declare `has_crumb_trail`" do
         Log.all.empty?.should be
         @book.destroy
         Log.find_by_item_id(@book.id).should be
+      end
+    end
+  end
+
+  describe "CrumbTrail usage interface" do
+    it "should respond to `has_logs?`" do
+      @book.logs.empty?.should be
+      @book.has_logs?.should be_false
+    end
+
+    context "without any logs" do
+      it "should response to `previous_state` and return nil" do
+        @book.logs.empty?.should be
+        @book.previous_state.should be_nil
+      end
+
+      it "should respond to `previous_state` and return the previous object state" do
+        @book.update_attributes :title => "The Gutenberg Revolution"
+        result = @book.clone.tap { |obj| obj.title = "Book"}
+        @book.previous_state.should == result
       end
     end
   end

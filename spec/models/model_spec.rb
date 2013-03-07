@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe "ActiveRecord Models that declare `has_crumb_trail`" do
   before(:each) do
+    Book.delete_all
     @book = Book.create!(:title => "Book").tap { |obj| obj.logs.reload }.reload
     Log.delete_all # Do not log changes for the above object
 
@@ -53,7 +54,12 @@ describe "ActiveRecord Models that declare `has_crumb_trail`" do
 
       it "should respond to `previous_state` and return the previous object state" do
         @book.update_attributes :title => "The Gutenberg Revolution"
-        result = @book.clone.tap { |obj| obj.title = "Book"}
+        result = @book.dup.tap do |prev|
+          prev.id = @book.id
+          prev.title = "Book"
+          prev.created_at = @book.created_at
+          prev.updated_at = @book.updated_at
+        end
         @book.previous_state.should == result
       end
     end

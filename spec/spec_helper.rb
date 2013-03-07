@@ -6,6 +6,7 @@ require 'rspec/autorun'
 require 'mocha/setup'
 require 'database_cleaner'
 require 'pry'
+require 'ruby-debug'
 
 Rails.backtrace_cleaner.remove_silencers!
 

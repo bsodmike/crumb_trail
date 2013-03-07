@@ -1,5 +1,9 @@
 source "http://rubygems.org"
 
+gem 'linecache19', '0.5.13'
+gem 'ruby-debug-base19', '0.11.26'
+gem 'ruby-debug19', :require => 'ruby-debug'
+
 # Declare your gem's dependencies in crumb_trail.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.

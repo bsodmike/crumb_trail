@@ -27,10 +27,13 @@ module CrumbTrail
     module InstanceMethods
       def previous_state
         return nil unless has_logs?
-        subject = self
-        clone = subject.clone.tap do |obj|
-          subject.logs.first.object_changes.each_pair do |k,v|
-            obj[k.to_sym] = "#{v}"
+        previous = self
+        clone = previous.dup.tap do |prev|
+          prev.id = id
+          prev.created_at = created_at
+          prev.updated_at = updated_at
+          previous.logs.first.object_changes.each_pair do |k,v|
+            prev[k.to_sym] = "#{v}"
           end
         end
       end

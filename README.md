@@ -1,12 +1,12 @@
 # CrumbTrail
 
-# Rails Version
+## Rails Version
 
+Tested for Rails 3.2.12 and is dependent on ActiveRecord `>=3.2`.
 
+## Installation & Usage
 
-# Installation & Usage
-
-## Rails 3
+### Rails 3
 
 1. Install crumb_trail as a gem via your Gemfile:
 
@@ -14,7 +14,19 @@
 gem 'crumb_trail'
 ```
 
-2. Add `has_crumb_trail` to the models you want to track.
+2. Generate a migration which will add a `logs` table to your database.
+
+```
+bundle exec rails generate crumb_trail:install
+```
+
+3. Run the migrations.
+
+```
+bundle exec rake db:migrate
+```
+
+4. Add `has_crumb_trail` to the models you want to track.
 
 ```ruby
 class Client < ActiveRecord::Base
@@ -22,7 +34,7 @@ class Client < ActiveRecord::Base
 end
 ```
 
-# Testing
+## Testing
 
 First perform `bundle exec rake db:migrate && rake db:test:clone`.  Simply run the tests with `rake` in `crumb_trail/`.
 
@@ -43,6 +55,6 @@ Finished in 0.07734 seconds
 Randomized with seed 48086
 ```
 
-# License
+## License
 
 This project rocks and uses MIT-LICENSE.

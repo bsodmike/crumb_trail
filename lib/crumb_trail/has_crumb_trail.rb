@@ -14,7 +14,7 @@ module CrumbTrail
           :dependent => :destroy
 
         after_create :record_create
-        before_update :record_update
+        around_update :record_update
         after_destroy :record_destroy
       end
 
@@ -30,8 +30,8 @@ module CrumbTrail
         previous = self
         clone = previous.dup.tap do |prev|
           prev.id = id
-          prev.created_at = created_at
-          prev.updated_at = updated_at
+          prev.created_at = created_at unless created_at.nil?
+          prev.updated_at = updated_at unless updated_at.nil?
           previous.logs.first.object_changes.each_pair do |k,v|
             prev[k.to_sym] = "#{v}"
           end
@@ -48,7 +48,9 @@ module CrumbTrail
       end
 
       def record_update
-        log_changes(:event => 'update')
+        updated_at = self.updated_at
+        yield
+        log_changes(:event => 'update', :updated_at => updated_at)
       end
 
       def record_destroy
@@ -61,10 +63,17 @@ module CrumbTrail
       end
 
       def log_changes(data)
+        obj_changes = if data[:updated_at].present?
+          self.changed_attributes.merge({ "updated_at" => data[:updated_at]})
+        else
+          self.changed_attributes
+        end
+
         self.logs.create!(:event => data[:event],
           :object => to_hash(self),
-          :object_changes => self.changed_attributes
+          :object_changes => obj_changes
         )
+
       end
 
       def to_hash(item)
